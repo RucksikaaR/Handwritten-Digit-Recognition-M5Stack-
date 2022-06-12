@@ -4,17 +4,13 @@ M5GFX display;
 int val;
 int iteration;
 const int Buffer_Size = "Your estimation of the number of pixels that are included when you draw a digit";
-float* Buffer = (float*) calloc(Buffer_Size, sizeof(float)); 
+float* Buffer = (float*) calloc(Buffer_Size, sizeof(float)); //According to the README file, you are supposed to create input_t* type input variable so I have used float*
 
 void setup(void)
 {
   Serial.begin(115200);
   display.init();
   display.setFont(&fonts::Font4);
-  if(!Buffer){
-    Serial.println("Failed to allocate memory");
-  }
-
   if (!display.touch())
   {
     display.setTextDatum(textdatum_t::middle_center);
@@ -116,10 +112,6 @@ void loop(void)
    neuton_model_reset_inputs();
    free(Buffer); //Clear buffer to allocate memory for the digits drawn again
    Buffer = (float*) calloc(Buffer_Size, sizeof(float));
-   if (!Buffer)
-    {
-      Serial.println("Failed to allocate memory");
-    }
   }
   vTaskDelay(1);
 }
