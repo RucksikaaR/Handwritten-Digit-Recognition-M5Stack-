@@ -1,4 +1,3 @@
-#Recognizing handwritten digits with Neuton TinyML
 # How to integrate Neuton into your firmware project 
 
 ## Include header file
