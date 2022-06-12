@@ -3,8 +3,8 @@
 M5GFX display;
 int val;
 int iteration;
-const int Buffer_Size = 255;
-float* Buffer = (float*) calloc(Buffer_Size, sizeof(float));   // allocate memory for pixel buffer with 0s
+const int Buffer_Size = "Your estimation of the number of pixels that are included when you draw a digit";
+float* Buffer = (float*) calloc(Buffer_Size, sizeof(float)); 
 
 void setup(void)
 {
@@ -38,16 +38,16 @@ void loop(void)
 
     for (int i = 0; i < nums; ++i)
     {
-      if ((tp[i].y*320 + tp[i].x) != val && iteration<Buffer_Size)
+      if ((tp[i].y*320 + tp[i].x) != val && iteration<Buffer_Size)  //Doing this can prevent duplication of data
       {
-        Buffer[iteration] = tp[i].y*320 + tp[i].x;
+        Buffer[iteration] = tp[i].y*320 + tp[i].x; //320 is the display width
         val=Buffer[iteration];
         iteration++;
       }
     }
     display.display();
 
-    display.setColor(display.isEPD() ? TFT_BLACK : TFT_WHITE);
+    display.setColor(display.isEPD() ? TFT_BLACK : TFT_WHITE); // Setting the foreground and background colour of the touch points
     for (int i = 0; i < nums; ++i)
     {
       int s = tp[i].size + 3;
@@ -68,16 +68,16 @@ void loop(void)
     }
     drawed = true;
   }
-  else if (drawed)
+  else if (drawed) //Implements after you finish drawing the digit
   {
     drawed = false;
     display.waitDisplay();
     display.clear();
     display.display();
-    if (neuton_model_set_inputs(Buffer)==0){
+    if (neuton_model_set_inputs(Buffer)==0){ 
       uint16_t index;
       float* outputs;
-      if (neuton_model_run_inference(&index, &outputs) == 0){
+      if (neuton_model_run_inference(&index, &outputs) == 0){ //Classifying the prediction result. Take a look at the multi_target_dict in target_values directory
         switch(index){
           case 0:
           Serial.println("one");
@@ -112,9 +112,9 @@ void loop(void)
       }
     }
    }
-   iteration = val = 0;
+   iteration = val = 0; //Reset iteration and val variables
    neuton_model_reset_inputs();
-   free(Buffer);
+   free(Buffer); //Clear buffer to allocate memory for the digits drawn again
    Buffer = (float*) calloc(Buffer_Size, sizeof(float));
    if (!Buffer)
     {
